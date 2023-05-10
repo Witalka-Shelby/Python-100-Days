@@ -48,7 +48,12 @@ def resources_check(user_pick):
     return check
 
 
-def calc_coins(quarters, dimes, nickles, pennies):
+def calc_coins():
+    print("Please insert coins.")
+    quarters = int(input("how many quarters?: "))
+    dimes = int(input("how many dimes?: "))
+    nickles = int(input("how many nickles?: "))
+    pennies = int(input("how many penniess?: "))
     all_quarters = quarters * 0.25
     all_dimes = dimes * 0.10
     all_nickles = nickles * 0.05
@@ -79,12 +84,7 @@ while is_on:
         if False in are_there_enough_resources:
             print("restart")
 
-        print("Please insert coins.")
-        quarters = int(input("how many quarters?: "))
-        dimes = int(input("how many dimes?: "))
-        nickles = int(input("how many nickles?: "))
-        pennies = int(input("how many penniess?: "))
-        all_coins = calc_coins(quarters=quarters, dimes=dimes, nickles=nickles, pennies=pennies)
+        all_coins = calc_coins()
         
         coffee_cost = MENU[user_pick]['cost']
 
