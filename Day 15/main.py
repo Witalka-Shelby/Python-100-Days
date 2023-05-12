@@ -3,6 +3,7 @@ from menu import resources
 
 
 def report(c_resources):
+    """print current_resources"""
     global money
     water = c_resources['water']
     milk = c_resources['milk']
@@ -34,6 +35,7 @@ def user_input(u_input, menu_list):
 
 
 def resources_check(user_pick):
+    """checks all ingredients"""
     global MENU
     global current_resources
     check = []
@@ -49,16 +51,12 @@ def resources_check(user_pick):
 
 
 def calc_coins():
+    """calc all inserted coins"""
     print("Please insert coins.")
-    quarters = int(input("how many quarters?: "))
-    dimes = int(input("how many dimes?: "))
-    nickles = int(input("how many nickles?: "))
-    pennies = int(input("how many penniess?: "))
-    all_quarters = quarters * 0.25
-    all_dimes = dimes * 0.10
-    all_nickles = nickles * 0.05
-    all_pennies = pennies * 0.01
-    money_value = all_quarters + all_dimes + all_nickles + all_pennies
+    money_value = int(input("how many quarters?: ")) * 0.25
+    money_value += int(input("how many dimes?: ")) * 0.10
+    money_value += int(input("how many nickles?: ")) * 0.05
+    money_value += int(input("how many penniess?: ")) * 0.01
     return money_value
 
 
