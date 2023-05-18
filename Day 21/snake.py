@@ -8,7 +8,7 @@ LEFT = 180
 
 class Snake:
     def __init__(self):
-        self.snake_length = 20
+        self.snake_length = 3
         self.snake_body = []
         self.draw_snake()
         self.head = self.snake_body[0]
@@ -16,13 +16,16 @@ class Snake:
     def draw_snake(self):
         for _ in range(self.snake_length):
             self.add_segment()
-            
+
     def add_segment(self):
         new_body_part = Turtle("square")
         new_body_part.color("white")
         new_body_part.penup()
-        add_body_to_end = list(self.snake_body[-1].position())
-        add_body_to_end[0] -= DISTANCE_BETWEEN
+        if len(self.snake_body) > 0:
+            add_body_to_end = list(self.snake_body[-1].position())
+            add_body_to_end[0] -= DISTANCE_BETWEEN
+        else:
+            add_body_to_end = (0, 0)
         new_body_part.goto(add_body_to_end)
         self.snake_body.append(new_body_part)
 
