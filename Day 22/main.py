@@ -33,7 +33,7 @@ while game_is_on:
     time.sleep(speed)
     screen.update()
     pong_ball.move_ball()
-    print(speed)
+    # print(speed)
 
     if pong_ball.ycor() > 280 or pong_ball.ycor() < -280:
         pong_ball.bounce()
