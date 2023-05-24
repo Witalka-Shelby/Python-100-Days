@@ -1,12 +1,36 @@
-import random
+student_dict = {
+    "student": ["Angela", "James", "Lily"], 
+    "score": [56, 76, 98]
+}
 
-names = ["Alex", "Beth", "Caroline", "Eleanor", "Dave", "Freddie"]
+#Looping through dictionaries:
+for (key, value) in student_dict.items():
+    #Access key and value
+    pass
 
-upper_case_list = [name.upper() for name in names if len(name) > 4]
+import pandas
+student_data_frame = pandas.DataFrame(student_dict)
 
-students_score = {name:random.randint(0, 100) for name in names}
+#Loop through rows of a data frame
+for (index, row) in student_data_frame.iterrows():
+    #Access index and row
+    #Access row.student or row.score
+    pass
 
-passed_students = {student:students_score[student] for student in students_score if students_score[student] > 60}
+# Keyword Method with iterrows()
+# {new_key:new_value for (index, row) in df.iterrows()}
 
-print(students_score)
-print(passed_students)
+# #TODO 1. Create a dictionary in this format:
+# {"A": "Alfa", "B": "Bravo"}
+
+nato_list = pandas.read_csv("./day 26/nato_phonetic_alphabet.csv")
+
+#TODO 2. Create a list of the phonetic code words from a word that the user inputs.
+
+phone_dict = {row.letter: row.code for (index, row) in nato_list.iterrows()}
+
+name_input = input("Enter Name: ").upper()
+
+nato_name_list = [phone_dict[letter] for letter in name_input]
+
+print(nato_name_list)
