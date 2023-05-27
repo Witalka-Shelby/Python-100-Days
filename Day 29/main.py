@@ -1,6 +1,19 @@
 from tkinter import *
+from tkinter import messagebox
+import random
+import string
+import pyperclip
 
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
+
+def generate_pwd():
+    pwd = []
+    for _ in range(random.randint(14, 24)):
+        pwd.append(random.choice((random.choice(string.ascii_letters), random.choice(string.punctuation), random.choice(string.digits))))
+
+    password_entry.delete(0, END)
+    password_entry.insert(0, f"{''.join(pwd)}")
+    pyperclip.copy(''.join(pwd))
 
 # ---------------------------- SAVE PASSWORD ------------------------------- #
 
@@ -9,14 +22,20 @@ def save_password():
     username_save = username_entry.get()
     password_save = password_entry.get()
 
-    
-    with open("./day 29/data.txt", "a") as data_file:
-        data_file.write("\n")
-        data_file.write(f"{website_save}  |  {username_save}  |  {password_save}")
+    if len(website_save) == 0 or len(username_save) == 0 or len(password_save) == 0:
+        messagebox.showinfo(title="Info", message="No empty fields allowed !!")
 
-    website_entry.delete(0, END)
-    password_entry.delete(0, END)
+    else:
+        confirm = messagebox.askokcancel(title=website_save, message=f"Details entered: \n {website_save} \n {username_save} \n {password_save}")
+        # print(confirm)
+        if confirm:
+            with open("./day 29/data.txt", "a") as data_file:
+                data_file.write("\n")
+                data_file.write(f"{website_save}  |  {username_save}  |  {password_save}")
 
+            # clear entries
+            website_entry.delete(0, END)
+            password_entry.delete(0, END)
 
 # ---------------------------- UI SETUP ------------------------------- #
 
@@ -54,7 +73,7 @@ password_label.grid(column=0, row=3, sticky="e")
 password_entry = Entry(width=32)
 password_entry.grid(column=1, row=3, sticky="w")
 
-generate_button = Button(text="Generate Password")
+generate_button = Button(text="Generate Password", command=generate_pwd)
 generate_button.grid(column=2, row=3, sticky="w")
 
 ###
