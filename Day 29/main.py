@@ -22,7 +22,7 @@ def save_password():
     website_save = website_entry.get()
     username_save = username_entry.get()
     password_save = password_entry.get()
-    json_data = {website_save: {
+    json_data = {website_save.lower(): {
         "email": username_save,
         "password": password_save
     }}
@@ -43,10 +43,35 @@ def save_password():
             with open("./day 29/data.json", "w") as data_file:
                 json.dump(json_data, data_file, indent=4)
                 
+        finally:
+            # clear entries
+            website_entry.delete(0, END)
+            password_entry.delete(0, END)
 
-        # clear entries
-        website_entry.delete(0, END)
-        password_entry.delete(0, END)
+# ---------------------------- SEARCH PASSWORD ------------------------------- #
+
+def find_password():
+    search_text = website_entry.get()
+    search_text = search_text.lower()
+
+    if len(search_text) == 0:
+        messagebox.showinfo(title="Info", message="Search box is empty !!")
+
+    else:
+        try:
+            with open("./day 29/data.json", "r") as find_accounts:
+                accounts_list_json = json.load(find_accounts)
+                if search_text in accounts_list_json:
+                    username = accounts_list_json[search_text]["email"]
+                    password = accounts_list_json[search_text]["password"]
+                    messagebox.showinfo(title=f"{search_text}'s Login", message=f"Username: {username}\nPassword: {password}")
+                else:
+                    messagebox.showinfo(title="Error", message=f"No details for the {search_text} exists")
+
+        except FileNotFoundError:
+            messagebox.showerror(title="Error", message="Do Data File Found")
+
+
 
 # ---------------------------- UI SETUP ------------------------------- #
 
@@ -64,9 +89,12 @@ canvas.grid(column=1, row=0)
 website_label = Label(text="Website:", highlightthickness=0)
 website_label.grid(column=0, row=1, sticky="e")
 
-website_entry = Entry(width=51)
+website_entry = Entry(width=32)
 website_entry.grid(column=1, row=1, columnspan=2, sticky="w")
 website_entry.focus()
+
+search_button = Button(text="Search", command=find_password, width=14)
+search_button.grid(column=2, row=1, sticky="w")
 
 
 # Email/Username
