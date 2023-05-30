@@ -3,6 +3,7 @@ from tkinter import messagebox
 import random
 import string
 import pyperclip
+import json
 
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
 
@@ -21,21 +22,31 @@ def save_password():
     website_save = website_entry.get()
     username_save = username_entry.get()
     password_save = password_entry.get()
+    json_data = {website_save: {
+        "email": username_save,
+        "password": password_save
+    }}
 
     if len(website_save) == 0 or len(username_save) == 0 or len(password_save) == 0:
         messagebox.showinfo(title="Info", message="No empty fields allowed !!")
 
     else:
-        confirm = messagebox.askokcancel(title=website_save, message=f"Details entered: \n {website_save} \n {username_save} \n {password_save}")
-        # print(confirm)
-        if confirm:
-            with open("./day 29/data.txt", "a") as data_file:
-                data_file.write("\n")
-                data_file.write(f"{website_save}  |  {username_save}  |  {password_save}")
+        try:
+            with open("./day 29/data.json", "r") as data_file:
+                data = json.load(data_file)
+                data.update(json_data)
 
-            # clear entries
-            website_entry.delete(0, END)
-            password_entry.delete(0, END)
+            with open("./day 29/data.json", "w") as data_file:
+                json.dump(data, data_file, indent=4)
+
+        except FileNotFoundError:
+            with open("./day 29/data.json", "w") as data_file:
+                json.dump(json_data, data_file, indent=4)
+                
+
+        # clear entries
+        website_entry.delete(0, END)
+        password_entry.delete(0, END)
 
 # ---------------------------- UI SETUP ------------------------------- #
 
