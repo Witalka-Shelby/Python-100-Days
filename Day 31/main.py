@@ -12,15 +12,9 @@ canvas = Canvas(height=526, width=800, bg=BACKGROUND_COLOR, highlightthickness=0
 card_front_png = PhotoImage(file="./day 31/images/card_front.png")
 card_back_png = PhotoImage(file="./day 31/images/card_back.png")
 canvas.create_image(400, 263, image=card_front_png)
+canvas.create_text(400, 150, text="French", font=("Ariel", "40", "italic"))
+canvas.create_text(400, 263, text="trovue", font=("Ariel", "40", "italic"))
 canvas.grid(row=0, column=0, columnspan=2)
-
-# Card Text
-languuage_label = Label(text="French", font=("Ariel", "40", "italic"), highlightthickness=0)
-languuage_label.grid(row=0, column=0, columnspan=2, sticky="n", pady=150)
-
-# WordText
-word_label = Label(text="trovue", font=("Ariel", "60", "bold"), highlightthickness=0)
-word_label.grid(row=0, column=0, columnspan=2, sticky="s", pady=263)
 
 # Wrong Button
 wrong_img = PhotoImage(file="./day 31/images/wrong.png")
