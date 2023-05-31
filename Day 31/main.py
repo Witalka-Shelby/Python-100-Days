@@ -6,8 +6,13 @@ BACKGROUND_COLOR = "#B1DDC6"
 timer = None
 current_card = {}
 
-words_csv = pandas.read_csv("./day 31/data/french_words.csv")
-words_dict = words_csv.to_dict(orient="records")
+try:
+    words_csv = pandas.read_csv("./day 31/data/words_to_learn.csv")
+except FileNotFoundError:
+    words_csv = pandas.read_csv("./day 31/data/french_words.csv")
+    words_csv.to_csv("./day 31/data/words_to_learn.csv")
+finally:
+    words_dict = words_csv.to_dict(orient="records")
 
 def get_word():
     global current_card, flip_timer
@@ -25,7 +30,15 @@ def reveal_card():
     canvas.itemconfig(card_language, text="English", fill="white")
     canvas.itemconfig(card_word, text=current_card["English"], fill="white")
     
-    
+
+def word_known():
+    global current_card
+    words_dict.remove(current_card)
+    temp = pandas.DataFrame(words_dict)
+    temp.to_csv("./day 31/data/words_to_learn.csv", index=False)
+    get_word()
+
+
 
 window = Tk()
 window.title("Fla5hy")
@@ -49,8 +62,9 @@ wrong_btn.grid(row=1, column=0)
 
 # Right Button
 right_img = PhotoImage(file="./day 31/images/right.png")
-right_btn = Button(image=right_img, highlightthickness=0, command=get_word)
+right_btn = Button(image=right_img, highlightthickness=0, command=word_known)
 right_btn.grid(row=1, column=1)
+
 
 get_word()
 
