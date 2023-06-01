@@ -20,7 +20,7 @@ def iss_part():
     # print(MY_LATI - iss_latitude)
     # print(MY_LONG - iss_longitude)
 
-    if (MY_LATI - iss_latitude) < 5 and (MY_LONG - iss_longitude) < 5:
+    if MY_LATI-5 <= iss_latitude <= MY_LATI+5 and MY_LONG-5 <= iss_longitude <= MY_LATI+5:
         return True
     
     return False
