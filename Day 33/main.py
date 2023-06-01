@@ -33,10 +33,16 @@ def sun_part():
     response_sunset.raise_for_status()
     sunset_json = response_sunset.json()
 
-    # sunrise = int(sunset_json["results"]["sunrise"].split("T")[1].split(":")[0])
+    sunrise = int(sunset_json["results"]["sunrise"].split("T")[1].split(":")[0])
     sunset = int(sunset_json["results"]["sunset"].split("T")[1].split(":")[0])
 
-    return sunset
+    date_now = datetime.now()
+    hour_now = date_now.hour
+
+    if hour_now > sunset or hour_now < sunrise:
+        return True
+
+    return False
 
 def send_email(email_msg):
     email_name = "MYEMAIL"
@@ -56,14 +62,12 @@ def send_email(email_msg):
 while True:
     is_iss_in_air = iss_part()
     # is_iss_in_air = True
-    sunset = sun_part()
-    date_now = datetime.now()
-    hour = date_now.hour
-    # hour = 24
-    if hour > sunset and is_iss_in_air == True:
+    dark = sun_part()
+    if dark == True and is_iss_in_air == True:
         print("SEND EMAIL")
         # send_email("WATCH THE SKY")!
 
+    print("ISS is not overhead")
     time.sleep(5) # 60
 
 
