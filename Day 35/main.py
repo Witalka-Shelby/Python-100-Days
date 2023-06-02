@@ -26,6 +26,7 @@ for i in range(4):
     weather_date_time = int(weather_data_json[i]["dt_txt"].split(" ")[1].split(":")[0])
     weather_id = weather_data_json[i]["weather"][0]["id"]
     if weather_id < 700:
+        will_rain = True
         print("Bring an umbrella")
         print(weather_data_json[i]["weather"][0]["description"])
         print(weather_data_json[i]["dt_txt"])
@@ -37,3 +38,21 @@ for i in range(4):
 #         print(weather["weather"][0]["description"])
 #         print("~12h !!!")
 
+# Download the helper library from https://www.twilio.com/docs/python/install
+import os
+from twilio.rest import Client
+
+
+# Find your Account SID and Auth Token at twilio.com/console
+# and set the environment variables. See http://twil.io/secure
+account_sid = os.environ['TWILIO_ACCOUNT_SID']
+auth_token = os.environ['TWILIO_AUTH_TOKEN']
+client = Client(account_sid, auth_token)
+message = client.messages \
+                .create(
+                    body="Join Earth's mightiest heroes. Like Kevin Bacon.",
+                    from_='+133333336',
+                    to='+133333337'
+                )
+if will_rain:
+    print(message.sid)
