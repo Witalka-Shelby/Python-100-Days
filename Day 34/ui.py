@@ -12,7 +12,7 @@ class QuizInterface:
         self.window.title("Qu!zZl3R")
         self.window.config(pady=20, padx=20, bg=THEME_COLOR)
 
-        self.timer = self.window.after(0)
+        # self.timer = self.window.after(0)
 
         # score label
         self.score = Label(text=f"Score: {self.quiz.score}", bg=THEME_COLOR, fg="white", font=("Arial", "13", "bold"))
@@ -49,10 +49,14 @@ class QuizInterface:
             self.false_btn.config(state="disabled")
 
     def true_btn_meth(self):
+        if self.timer != None:
+            self.window.after_cancel(self.timer)
         is_rigt = self.quiz.check_answer("True")
         self.give_feedback(is_rigt)
     
     def fals_btn_meth(self):
+        if self.timer != None:
+            self.window.after_cancel(self.timer)
         is_rigt = self.quiz.check_answer("False")
         self.give_feedback(is_rigt)
 
@@ -62,4 +66,4 @@ class QuizInterface:
         else:
             self.canvas.configure(bg="red", highlightthickness=0)
         
-        self.window.after(1000, self.get_next_quiz)
+        self.timer = self.window.after(1000, self.get_next_quiz)
