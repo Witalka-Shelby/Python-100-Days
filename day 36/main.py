@@ -1,6 +1,7 @@
 import requests
 from datetime import datetime
 from datetime import timedelta
+import os
 
 STOCK = "TSLA"
 COMPANY_NAME = "Tesla Inc"
@@ -38,9 +39,13 @@ def alpha_stock():
     # print(opening_before_yesterday * 1.05)
     # print(opening_before_yesterday * 0.95)
     # print(opening_yesterday)
-    get_news()
     if opening_yesterday > opening_before_yesterday * 1.05 or opening_yesterday < opening_before_yesterday * 0.95:
         print(calc_percent)
+        news_list = get_news()
+        # sms_message(news_list)
+        for news in news_list:
+            print(news["title"])
+        
         
 
 ## STEP 2: Use https://newsapi.org
@@ -56,24 +61,27 @@ def get_news():
     for i in  range(3):
         news_list.append(response_json[i])
     
-    print(news_list)
-
-
-alpha_stock()
+    return news_list
 
 
 ## STEP 3: Use https://www.twilio.com
 # Send a seperate message with the percentage change and each article's title and description to your phone number. 
 
+def sms_message(news_list):
+    pass
+    # I SKIP THE SMS PART
+    # account_sid = os.environ['TWILIO_ACCOUNT_SID']
+    # auth_token = os.environ['TWILIO_AUTH_TOKEN']
+    # client = Client(account_sid, auth_token)
 
-#Optional: Format the SMS message like this: 
-"""
-TSLA: 🔺2%
-Headline: Were Hedge Funds Right About Piling Into Tesla Inc. (TSLA)?. 
-Brief: We at Insider Monkey have gone over 821 13F filings that hedge funds and prominent investors are required to file by the SEC The 13F filings show the funds' and investors' portfolio positions as of March 31st, near the height of the coronavirus market crash.
-or
-"TSLA: 🔻5%
-Headline: Were Hedge Funds Right About Piling Into Tesla Inc. (TSLA)?. 
-Brief: We at Insider Monkey have gone over 821 13F filings that hedge funds and prominent investors are required to file by the SEC The 13F filings show the funds' and investors' portfolio positions as of March 31st, near the height of the coronavirus market crash.
-"""
+    # for news in news_list:
+    #     print("Test")
+    #     message = client.messages \
+    #                     .create(
+    #                         body=news["title"],
+    #                         from_='+133333336',
+    #                         to='+133333337'
+    #                     )
+    #     print(message.sid)
 
+alpha_stock()
