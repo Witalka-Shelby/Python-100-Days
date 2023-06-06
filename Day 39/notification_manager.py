@@ -1,9 +1,11 @@
 from datetime import datetime
 from datetime import timedelta
+import requests
 from dotenv import dotenv_values
 
 config = dotenv_values(".env")
-GOOGLE_API = config['GOOGLE_API']
+TELEGRAM_TOKEN = config['TELEGRAM']
+CHAT_ID = config['TELE_ID']
 
 class NotificationManager:
     def __init__(self, flight_list) -> None:
@@ -20,4 +22,7 @@ class NotificationManager:
 
         message = f"""Sent from your Email Account - Low price alert! Only {'${}'.format(price)} to fly from 
         {departure_city}-{departure_code} to {arrival_city}-{arrival_code}, from {outbound_date} to {inbound_date}"""
-        print(message)
+
+        url = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendMessage?chat_id={CHAT_ID}&text={message}"
+
+        print(requests.get(url).json()) # this sends the message
