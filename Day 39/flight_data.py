@@ -31,11 +31,15 @@ class FlightData:
         kiwi_url = "https://api.tequila.kiwi.com/v2/search"
         response = requests.get(url=kiwi_url, headers=self.header, params=config)
         response.raise_for_status()
-        flights = response.json()["data"]
-        for flight in flights:
-            airport = flight["cityTo"]
-            price = flight["price"]
+        # flights = response.json()["data"]
+        try:
+            cheapest_fligt = response.json()["data"][0]
+            airport = cheapest_fligt["cityTo"]
+            price = cheapest_fligt["price"]
             if price <= lowest_price:
-                print(f"{airport}: {'${}'.format(price)}")
+                return cheapest_fligt
+                # print(f"{airport}: {'${}'.format(price)}")
+        except IndexError:
+            return None
 
 # FlightData()

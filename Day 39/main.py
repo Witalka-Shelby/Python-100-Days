@@ -1,6 +1,7 @@
 from data_manager import DataManager
 from flight_search import FlightSearch
 from flight_data import FlightData
+from notification_manager import NotificationManager
 
 #This file will need to use the DataManager,FlightSearch, FlightData, NotificationManager classes to achieve the program requirements.
 
@@ -24,5 +25,12 @@ for place in sheet_data:
         iata_code = fs.iata_code(city_name)
         dm.update_iata_codes(id=city_id, iata=iata_code)
 
-    fd.search_fligh(departure_airport_code=FLY_FROM, fly_to=iata_code, lowest_price=lowest_price)
+    cheap_flight = fd.search_fligh(departure_airport_code=FLY_FROM, fly_to=iata_code, lowest_price=lowest_price)
+
+    if cheap_flight == None:
+        continue
+    
+    # send notification
+    nm = NotificationManager(cheap_flight)
+    # print(cheap_flight)
 
