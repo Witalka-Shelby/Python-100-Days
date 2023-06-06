@@ -21,7 +21,6 @@ class DataManager:
         }
         response = requests.put(doc_url, auth=self.basic, json=body)
         response.raise_for_status()
-        print(response.text)
 
     def get_destenations(self):
         sheety_url = "https://api.sheety.co/895dca4b428381080aae4e9eb3482891/flightDeals/prices"

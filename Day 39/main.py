@@ -10,10 +10,12 @@ sheet_data = dm.get_destenations()
 
 for place in sheet_data:
     if place["iataCode"] == "":
-        iata_code = fs.iata_code()
         city_id = place["id"]
+        city_name = place["city"]
+        iata_code = fs.iata_code(city_name)
+        
         dm.update_iata_codes(id=city_id, iata=iata_code)
 
 
 
-print(sheet_data)
+# print(sheet_data)

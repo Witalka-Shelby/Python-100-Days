@@ -20,6 +20,6 @@ class FlightData:
         response = requests.get(url=kiwi_url, headers=header, params=kiwi_config)
 
         response.raise_for_status()
-        print(response.text)
+        # print(response.text)
 
 FlightData()
