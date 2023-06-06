@@ -1,18 +1,14 @@
 import requests
 from datetime import datetime
 from requests.auth import HTTPBasicAuth
-import os
+from dotenv import dotenv_values
+
+config = dotenv_values(".env")
+
 
 def nutri_part():
     APP_ID = "test"
     API_KEY = "test"
-
-    # try:
-    #     with open("../api.txt") as key:
-    #         API_KEY = key.readline()
-    # except:
-    #     print("No API file")
-
 
     nutri_header = {
         "x-app-id": APP_ID,
