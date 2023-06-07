@@ -2,6 +2,7 @@ from data_manager import DataManager
 from flight_search import FlightSearch
 from flight_data import FlightData
 from notification_manager import NotificationManager
+from user_manager import User
 
 #This file will need to use the DataManager,FlightSearch, FlightData, NotificationManager classes to achieve the program requirements.
 
@@ -31,5 +32,10 @@ for place in sheet_data:
         continue
     
     # send notification
-    NotificationManager(cheap_flight)
+    get_all_user = User.get_user()
+    users = get_all_user["users"]
+    for user in users:
+        telegram_id = user["email"]
+        ## Send Telegram ID to NotificationManager to send message
+        NotificationManager(cheap_flight, telegram_id)
 

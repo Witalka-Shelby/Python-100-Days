@@ -9,7 +9,8 @@ CHAT_ID = config['TELE_ID']
 SPACER = "\n"
 
 class NotificationManager:
-    def __init__(self, flight_list) -> None:
+    def __init__(self, flight_list, telegram_id) -> None:
+        TELEGRAM_TOKEN = telegram_id
         stop_over = ""
         price = flight_list["price"]
         departure_city = flight_list["cityFrom"]
