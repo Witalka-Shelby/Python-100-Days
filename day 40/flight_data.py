@@ -17,29 +17,17 @@ class FlightData:
         # "01/11/2023"
     
     def search_fligh(self, departure_airport_code, fly_to, lowest_price):
-        # config = {
-        #     "fly_from": departure_airport_code,
-        #     "fly_to": fly_to,
-        #     "date_from": self.tomorrow.strftime("%d/%m/%Y"),
-        #     "date_to": self.half_year.strftime("%d/%m/%Y"),
-        #     "max_stopovers": 1,
-        #     "nights_in_dst_from": 7,
-        #     "nights_in_dst_to": 28,
-        #     "curr": "USD"
-        # }
-
         config = {
             "fly_from": departure_airport_code,
             "fly_to": fly_to,
             "date_from": self.tomorrow.strftime("%d/%m/%Y"),
             "date_to": self.half_year.strftime("%d/%m/%Y"),
             "max_stopovers": 0,
-            "fly_days": "5",
-            "nights_in_dst_from": 2,
-            "nights_in_dst_to": 2,
+            "nights_in_dst_from": 7,
+            "nights_in_dst_to": 28,
             "curr": "USD"
         }
-    
+
         kiwi_url = "https://api.tequila.kiwi.com/v2/search"
         response = requests.get(url=kiwi_url, headers=self.header, params=config)
         response.raise_for_status()

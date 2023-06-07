@@ -31,6 +31,5 @@ for place in sheet_data:
         continue
     
     # send notification
-    nm = NotificationManager(cheap_flight)
-    # print(cheap_flight)
+    # NotificationManager(cheap_flight)
 
