@@ -40,6 +40,24 @@ class FlightData:
                 return cheapest_fligt
                 # print(f"{airport}: {'${}'.format(price)}")
         except IndexError:
-            return None
-
-# FlightData()
+            try:
+                config = {
+                    "fly_from": departure_airport_code,
+                    "fly_to": fly_to,
+                    "date_from": self.tomorrow.strftime("%d/%m/%Y"),
+                    "date_to": self.half_year.strftime("%d/%m/%Y"),
+                    "max_stopovers": 2,
+                    "nights_in_dst_from": 7,
+                    "nights_in_dst_to": 28,
+                    "curr": "USD"
+                }
+                kiwi_url = "https://api.tequila.kiwi.com/v2/search"
+                response = requests.get(url=kiwi_url, headers=self.header, params=config)
+                response.raise_for_status()
+                cheapest_fligt = response.json()["data"][0]
+                airport = cheapest_fligt["cityTo"]
+                price = cheapest_fligt["price"]
+                if price <= lowest_price:
+                    return cheapest_fligt
+            except IndexError:
+                return None

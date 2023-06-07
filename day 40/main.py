@@ -5,7 +5,7 @@ from notification_manager import NotificationManager
 
 #This file will need to use the DataManager,FlightSearch, FlightData, NotificationManager classes to achieve the program requirements.
 
-FLY_FROM = "TPA"
+FLY_FROM = "FRA"
 
 
 dm = DataManager()
@@ -31,5 +31,5 @@ for place in sheet_data:
         continue
     
     # send notification
-    # NotificationManager(cheap_flight)
+    NotificationManager(cheap_flight)
 
