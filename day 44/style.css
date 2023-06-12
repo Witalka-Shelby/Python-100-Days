@@ -1,0 +1,26 @@
+body {
+    background-color: black;
+}
+
+#motiv {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
+}
+
+img {
+    border: 5px solid white;
+    
+}
+
+h1 {
+    color: white;
+    text-align: center;
+}
+
+p {
+    color: white;
+    text-align: center;
+}
