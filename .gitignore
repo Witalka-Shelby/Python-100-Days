@@ -1,2 +1,5 @@
 .env
 .cache
+.venv
+.vscode
+!spec/**/*.html
