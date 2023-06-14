@@ -15,7 +15,7 @@ URL = "https://www.python.org/"
 test_dict = {}
 
 driver.get(URL)
-events = wait.until(EC.presence_of_element_located((By.XPATH, "/html/body/div/div[3]/div/section/div[2]/div[2]/div/ul")))
+events = wait.until(EC.presence_of_element_located((By.XPATH, "/html/body/div/div[3]/div/section/div[2]/div[2]/div/ul"))).cl
 all_li = events.find_elements(By.TAG_NAME, "li")
 
 counter = 0
