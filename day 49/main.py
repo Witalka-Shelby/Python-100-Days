@@ -21,7 +21,7 @@ options.binary_location = r"C:\Program Files\Mozilla Firefox\firefox.exe"
 
 driver = webdriver.Firefox(options=options)
 actions = ActionChains(driver)
-wait = WebDriverWait(driver, 10)
+wait = WebDriverWait(driver, 30)
 
 URL = "https://www.linkedin.com/jobs/search/?currentJobId=3590341680&f_LF=f_AL&geoId=102257491&keywords=python%20developer&location=London%2C%20England%2C%20United%20Kingdom"
 
@@ -51,11 +51,7 @@ sleep(2)
 
 for i in range(1, len(jobs)):
     xpath_job = f"/html/body/div[5]/div[3]/div[4]/div/div/main/div/div[1]/div/ul/li[{i}]/div"
-    # /html/body/div[5]/div[3]/div[4]/div/div/main/div/div[1]/div/ul/li[2]/div
-    # print(job.get_attribute('id'))
     locate_job = wait.until(EC.element_to_be_clickable((By.XPATH, xpath_job)))
-    # print(job.get_attribute('id'))
-    # activate the job
     locate_job.click()
     # save the job
     xpath_save_btn = '/html/body/div[5]/div[3]/div[4]/div/div/main/div/div[2]/div/div[2]/div[1]/div/div[1]/div/div[1]/div[1]/div[4]/div/button'
@@ -74,5 +70,5 @@ for i in range(1, len(jobs)):
 
 sleep(5)
 
-# driver.quit()
+driver.quit()
 
