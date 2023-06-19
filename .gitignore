@@ -5,3 +5,5 @@
 !spec/**/*.html
 day 48/geckodriver.exe
 geckodriver.log
+!spec/**/*.png
+!spec/**/*.ico
