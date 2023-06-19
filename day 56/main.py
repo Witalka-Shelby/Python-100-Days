@@ -6,6 +6,7 @@ app = Flask(__name__)
 
 @app.route("/")
 def home():
+    # deleted all template data
     return render_template("index.html")
 
 
