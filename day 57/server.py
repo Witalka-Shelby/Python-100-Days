@@ -10,6 +10,7 @@ def home():
     current_year = date.today().year
     return "Hello World"
 
+
 @app.route("/guess/<name>")
 def guess(name):
     name_guess = name.title()
@@ -30,6 +31,15 @@ def guess(name):
 
 
     return render_template("index.html", name=name_guess, gender=gender, age=age)
+
+
+@app.route("/blog")
+def blog():
+    blog_url = "https://api.npoint.io/c790b4d5cab58020d391"
+    response = requests.get(blog_url)
+    posts = response.json()
+
+    return render_template("blog.html", posts=posts)
 
 
 if __name__ == "__main__":
