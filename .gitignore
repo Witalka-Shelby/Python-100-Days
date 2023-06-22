@@ -8,3 +8,11 @@ geckodriver.log
 !spec/**/*.png
 !spec/**/*.ico
 !spec/**/*.css
+day 59/static/favicon.ico
+day 59/static/css/styles.css
+day 59/static/img/about-bg.jpg
+day 59/static/img/contact-bg.jpg
+day 59/static/img/home-bg.jpg
+day 59/static/img/post-bg.jpg
+day 59/static/img/post-sample-image.jpg
+day 59/static/js/scripts.js
