@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 import requests
 
 API_URL = "https://api.npoint.io/69084c9c49e83151f9ca"
@@ -18,9 +18,17 @@ def about():
     return render_template("about.html")
 
 
-@app.route("/contact")
+@app.route("/contact", methods=["GET", "POST"])
 def contact():
-    return render_template("contact.html")
+    if request.method == "POST":
+        name = request.form["name"]
+        email = request.form["email"]
+        phone_number = request.form["phone"]
+        message = request.form["message"]
+        print(name + email + phone_number + message)
+        return f"Successfully sent you message"
+    else:
+        return render_template("contact.html")
 
 
 @app.route("/post/<id>")
@@ -33,6 +41,15 @@ def post(id):
             blog_article = "No new posts"
     return render_template("post.html", article=blog_article)
 
+
+@app.route("/form-enrty", methods=["POST"])
+def receive_data():
+    name = request.form["name"]
+    email = request.form["email"]
+    phone_number = request.form["phone"]
+    message = request.form["message"]
+    print(name + email + phone_number + message)
+    return f"Successfully sent you message"
 
 if __name__ == "__main__":
     app.run(debug=True)
