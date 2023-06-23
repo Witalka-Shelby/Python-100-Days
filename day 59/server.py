@@ -25,7 +25,8 @@ def contact():
         email = request.form["email"]
         phone_number = request.form["phone"]
         message = request.form["message"]
-        print(name + email + phone_number + message)
+        # send email with all data
+        # print(name + email + phone_number + message)
         return f"Successfully sent you message"
     else:
         return render_template("contact.html")
@@ -41,15 +42,6 @@ def post(id):
             blog_article = "No new posts"
     return render_template("post.html", article=blog_article)
 
-
-@app.route("/form-enrty", methods=["POST"])
-def receive_data():
-    name = request.form["name"]
-    email = request.form["email"]
-    phone_number = request.form["phone"]
-    message = request.form["message"]
-    print(name + email + phone_number + message)
-    return f"Successfully sent you message"
 
 if __name__ == "__main__":
     app.run(debug=True)
