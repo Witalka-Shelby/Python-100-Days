@@ -1,15 +1,11 @@
-<!DOCTYPE HTML>
-<html>
-<head>
-	<title>Secrets</title>
-</head>
-<body>
-<div class="jumbotron">
-	<div class="container">
-		<h1>Welcome</h1>
-		<p>Are you ready to discover my secret?</p>
-		<button class="btn btn-primary btn-lg"><a href="{{ url_for('login') }}">Login</a></button>
-	</div>
+{% extends "base.html" %}
+
+{% block title %}Secrets{% endblock %}
+
+{% block content %}
+<div class="container bd-gutter pt-md-1 pb-md-4">
+	<h1>Welcome</h1>
+	<p>Are you ready to discover my secret?</p>
+	<button class="btn btn-secondary rounded-pill px-3"><a href="{{ url_for('login') }}">Login</a></button>
 </div>
-</body>
-</html>
+{% endblock %}

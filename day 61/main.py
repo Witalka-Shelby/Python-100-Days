@@ -2,9 +2,12 @@ from flask import Flask, render_template, request
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, EmailField
 from wtforms.validators import DataRequired, Email
+from flask_bootstrap import Bootstrap5
 
 app = Flask(__name__)
 app.secret_key = "1337"
+
+bootstrap = Bootstrap5(app)
 
 class MyForm(FlaskForm):
     email = EmailField(label='Email', validators=[DataRequired(), Email()])
