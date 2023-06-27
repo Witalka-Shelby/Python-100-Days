@@ -1,13 +1,13 @@
 from flask import Flask, render_template, request
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField
-from wtforms.validators import DataRequired
+from wtforms import StringField, PasswordField, SubmitField, EmailField
+from wtforms.validators import DataRequired, Email
 
 app = Flask(__name__)
 app.secret_key = "1337"
 
 class MyForm(FlaskForm):
-    email = StringField(label='Email', validators=[DataRequired()])
+    email = EmailField(label='Email', validators=[DataRequired(), Email()])
     password = PasswordField(label='Password', validators=[DataRequired()])
     submit = SubmitField(label="Log In")
 
@@ -18,8 +18,9 @@ def home():
 @app.route("/login", methods=["GET", "POST"])
 def login():
     form = MyForm()
-    email = form.email.data
-    password = form.password.data
+    form.validate_on_submit()
+    # email = form.email.data
+    # password = form.password.data
     return render_template('login.html', form=form)
 
 
