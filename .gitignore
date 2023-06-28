@@ -22,3 +22,5 @@ day 62/cafe-data.csv
 day 63/requirements.txt
 day 63/pyproject.toml
 day 63/poetry.lock
+day 63/books-collection.db
+instance/new-books-collection.db
