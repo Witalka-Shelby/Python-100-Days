@@ -50,7 +50,7 @@ def movie_to_db():
 
 def read_all_db():
     with app.app_context():
-        result = db.session.execute(db.select(Movies).order_by(Movies.title))
+        result = db.session.execute(db.select(Movies).order_by(Movies.id))
         all_movies = result.scalars()
         movies_list = []
         for movie in all_movies:
@@ -69,10 +69,10 @@ def read_all_db():
 
 def find_movie_in_db(id):
     with app.app_context():
-        result = db.session.execute(db.select(Movies).where(Movies.id == id))
-        movie = result.scalar()
+        movie = db.session.execute(db.select(Movies).where(Movies.id == id)).scalar()
         return movie
     
+
 def update_movie(id, new_rating, new_review):
     with app.app_context():
         movie = db.session.execute(db.select(Movies).where(Movies.id == id)).scalar()
@@ -80,6 +80,14 @@ def update_movie(id, new_rating, new_review):
         movie.review= new_review
         db.session.commit()
     
+
+def delmovie_in_db(id):
+    with app.app_context():
+        movie = db.session.execute(db.select(Movies).where(Movies.id == id)).scalar()
+        db.session.delete(movie)
+        db.session.commit()
+
+
 # movie_to_db()
 
 @app.route("/")
@@ -99,6 +107,12 @@ def edit(id):
         return redirect(url_for("home"))
 
     return render_template("edit.html", movie=movie, form=form)
+
+
+@app.route("/del/<id>", methods=["GET", "POST"])
+def delete_movie(id):
+    delmovie_in_db(id)
+    return redirect(url_for("home"))
 
 if __name__ == '__main__':
     app.run()
