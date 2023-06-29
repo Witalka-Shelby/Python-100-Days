@@ -44,7 +44,7 @@ with app.app_context():
 
 def read_all_db():
     with app.app_context():
-        result = db.session.execute(db.select(Movies).order_by(Movies.id))
+        result = db.session.execute(db.select(Movies).order_by(Movies.rating))
         all_movies = result.scalars()
         movies_list = []
         for movie in all_movies:
