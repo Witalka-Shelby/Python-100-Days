@@ -24,3 +24,6 @@ day 63/pyproject.toml
 day 63/poetry.lock
 day 63/books-collection.db
 instance/new-books-collection.db
+instance/fav_movies.db
+day 64/__pycache__/database_manager.cpython-310.pyc
+day 64/static/css/styles.css
