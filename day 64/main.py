@@ -2,8 +2,8 @@ from flask import Flask, render_template, redirect, url_for, request
 from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField
-from wtforms.validators import DataRequired
+from wtforms import StringField, SubmitField, FloatField
+from wtforms.validators import DataRequired, Length, NumberRange
 import requests
 
 app = Flask(__name__)
@@ -22,6 +22,11 @@ class Movies(db.Model):
     ranking = db.Column(db.Float, nullable=False)
     review = db.Column(db.String, nullable=False)
     img_url = db.Column(db.String, nullable=False)
+
+class RateMovieForm(FlaskForm):
+    rating = FloatField('Rating', validators=[DataRequired(), NumberRange(min=1, max=10)])
+    review = StringField('Review', validators=[DataRequired(), Length(max=50)])
+    submit = SubmitField()
 
 with app.app_context():
     db.create_all()
@@ -60,15 +65,40 @@ def read_all_db():
                 "img_url": movie.img_url,
                 })
         return movies_list
+
+
+def find_movie_in_db(id):
+    with app.app_context():
+        result = db.session.execute(db.select(Movies).where(Movies.id == id))
+        movie = result.scalar()
+        return movie
+    
+def update_movie(id, new_rating, new_review):
+    with app.app_context():
+        movie = db.session.execute(db.select(Movies).where(Movies.id == id)).scalar()
+        movie.rating = new_rating
+        movie.review= new_review
+        db.session.commit()
+    
 # movie_to_db()
-
-
 
 @app.route("/")
 def home():
     movies = read_all_db()
     return render_template("index.html", movies=movies)
 
+@app.route("/edit/<id>", methods=["GET", "POST"])
+def edit(id):
+    form = RateMovieForm()
+    movie = find_movie_in_db(id)
+
+    if form.validate_on_submit():
+        new_rating = form.rating.data
+        new_review = form.review.data
+        update_movie(id, new_rating, new_review)
+        return redirect(url_for("home"))
+
+    return render_template("edit.html", movie=movie, form=form)
 
 if __name__ == '__main__':
     app.run()
