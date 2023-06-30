@@ -27,3 +27,5 @@ instance/new-books-collection.db
 instance/fav_movies.db
 day 64/__pycache__/database_manager.cpython-310.pyc
 day 64/static/css/styles.css
+day 66/cafes.db
+instance/cafes.db
