@@ -39,13 +39,20 @@ with app.app_context():
 def home():
     return render_template("index.html")
 
+## HTTP GET - Read Record
+
 @app.route("/random", methods=["GET"])
 def random():
     random_cafe = db.session.execute(db.select(Cafe).order_by(func.random())).scalar()
     random_json = jsonify(cafe=random_cafe.to_dict())
     return random_json
 
-## HTTP GET - Read Record
+@app.route("/all", methods=["GET"])
+def all():
+    all_cafes = db.session.execute(db.select(Cafe).order_by(Cafe.id)).scalars()
+    all_cafes_json = jsonify(cafes=[cafe.to_dict() for cafe in all_cafes])
+    return all_cafes_json
+
 
 ## HTTP POST - Create Record
 
