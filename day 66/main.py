@@ -44,15 +44,27 @@ def home():
 @app.route("/random", methods=["GET"])
 def random():
     random_cafe = db.session.execute(db.select(Cafe).order_by(func.random())).scalar()
-    random_json = jsonify(cafe=random_cafe.to_dict())
-    return random_json
+    json_data = jsonify(cafe=random_cafe.to_dict())
+    return json_data
 
 @app.route("/all", methods=["GET"])
 def all():
     all_cafes = db.session.execute(db.select(Cafe).order_by(Cafe.id)).scalars()
-    all_cafes_json = jsonify(cafes=[cafe.to_dict() for cafe in all_cafes])
-    return all_cafes_json
+    json_data = jsonify(cafes=[cafe.to_dict() for cafe in all_cafes])
+    return json_data
 
+@app.route("/search", methods=["GET"])
+def search():
+    loc = request.args.get("loc").title()
+    cafe_at_loc = db.session.execute(db.select(Cafe).where(Cafe.location == loc)).scalars()
+    json_data = jsonify(cafes=[cafe.to_dict() for cafe in cafe_at_loc])
+
+    if len(json_data.json["cafes"]) == 0:
+        return jsonify({"error": {"Not found": "Sorry we don't have a cafe at that location"}})
+    else:
+        return json_data
+
+    
 
 ## HTTP POST - Create Record
 
