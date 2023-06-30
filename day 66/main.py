@@ -1,5 +1,7 @@
-from flask import Flask, jsonify, render_template, request
+from flask import Flask, jsonify, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.sql.expression import func, select
+from flask import jsonify
 
 app = Flask(__name__)
 
@@ -23,11 +25,25 @@ class Cafe(db.Model):
     can_take_calls = db.Column(db.Boolean, nullable=False)
     coffee_price = db.Column(db.String(250), nullable=True)
 
+    def to_dict(self):
+        dictionary = {}
+        for column in self.__table__.columns:
+            dictionary[column.name] = getattr(self, column.name)
+        return dictionary
+
+with app.app_context():
+    db.create_all()
+
 
 @app.route("/")
 def home():
     return render_template("index.html")
-    
+
+@app.route("/random", methods=["GET"])
+def random():
+    random_cafe = db.session.execute(db.select(Cafe).order_by(func.random())).scalar()
+    random_json = jsonify(cafe=random_cafe.to_dict())
+    return random_json
 
 ## HTTP GET - Read Record
 
