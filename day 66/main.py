@@ -89,6 +89,15 @@ def add():
 
 ## HTTP PUT/PATCH - Update Record
 
+@app.route("/update-price/<cafe_id>", methods=["PATCH"])
+def patch(cafe_id):
+    new_price = request.args.get("new_price")
+    cafe = db.session.execute(db.select(Cafe).where(Cafe.id == cafe_id)).scalar()
+    cafe.coffee_price = new_price
+    db.session.commit()
+    return jsonify({"response": {"success": "Successfully updated the price"}})
+
+
 ## HTTP DELETE - Delete Record
 
 
