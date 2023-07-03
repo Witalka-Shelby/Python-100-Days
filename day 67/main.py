@@ -88,9 +88,23 @@ def contact():
     return render_template("contact.html")
 
 
-@app.route("/edit/")
-def edit_post():
-    return render_template("index.html")
+@app.route("/edit-post/<post_id>", methods=["GET", "POST"])
+def edit_post(post_id):
+    post = db.session.execute(db.select(BlogPost).filter_by(id=post_id)).scalar()
+    edit_form = CreatePostForm(
+        title=post.title,
+        subtitle=post.subtitle,
+        img_url=post.img_url,
+        author=post.author,
+        body=post.body
+    )
+
+    if edit_form.validate_on_submit():
+        post.title = edit_form.title.data
+        db.session.commit()
+        return redirect(url_for("show_post", index=post.id))
+
+    return render_template("make-post.html", form=edit_form)
 
 if __name__ == "__main__":
     app.run(debug=True)
