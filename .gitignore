@@ -105,3 +105,7 @@ day 67/static/vendor/jquery/jquery.slim.min.js
 day 67/static/vendor/jquery/jquery.slim.min.map
 instance/posts.db
 day 67/poetry.lock
+instance/users.db
+day 68/static/files/cheat_sheet.pdf
+day 68/static/css/styles.css
+day 68/requirements.txt
