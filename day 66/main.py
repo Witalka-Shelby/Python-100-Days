@@ -102,6 +102,18 @@ def patch(cafe_id):
 
 ## HTTP DELETE - Delete Record
 
+@app.route("/report-closed/<cafe_id>", methods=["DELETE"])
+def delete_cafe(cafe_id):
+    api_key = request.args.get("api_key")
+    if api_key == "TopSecretAPIKey":
+        try:
+            cafe_to_delete = db.session.execute(db.select(Cafe).where(Cafe.id == cafe_id)).scalar()
+            db.session.delete(cafe_to_delete)
+            # db.session.commit()
+        except:
+            return jsonify({"error": {"Not found": "Sorry a cafe with that id was not found in the database"}}), 404
+    else:
+        return jsonify({"error": "sorry, that's not allowed. Make sure you have the API Key."}), 403
 
 if __name__ == '__main__':
     app.run(debug=True)
