@@ -41,19 +41,19 @@ def home():
 
 ## HTTP GET - Read Record
 
-@app.route("/random", methods=["GET"])
+@app.route("/random")
 def random():
     random_cafe = db.session.execute(db.select(Cafe).order_by(func.random())).scalar()
     json_data = jsonify(cafe=random_cafe.to_dict())
     return json_data
 
-@app.route("/all", methods=["GET"])
+@app.route("/all")
 def all():
     all_cafes = db.session.execute(db.select(Cafe).order_by(Cafe.id)).scalars()
     json_data = jsonify(cafes=[cafe.to_dict() for cafe in all_cafes])
     return json_data
 
-@app.route("/search", methods=["GET"])
+@app.route("/search")
 def search():
     loc = request.args.get("loc").title()
     cafe_at_loc = db.session.execute(db.select(Cafe).where(Cafe.location == loc)).scalars()
@@ -64,9 +64,28 @@ def search():
     else:
         return json_data
 
-    
-
 ## HTTP POST - Create Record
+
+@app.route("/add", methods=["GET", "POST"])
+def add():
+    if request.method == "POST":
+        cafe = Cafe(
+            name = request.form["name"],
+            map_url = request.form["map_url"],
+            img_url = request.form["img_url"],
+            location = request.form["location"],
+            seats = request.form["seats"],
+            has_toilet = bool(request.form["has_toilet"]),
+            has_wifi = bool(request.form["has_wifi"]),
+            has_sockets = bool(request.form["has_sockets"]),
+            can_take_calls = bool(request.form["can_take_calls"]),
+            coffee_price = request.form["coffee_price"]
+        )
+        
+        db.session.add(cafe)
+        db.session.commit()
+        return jsonify({"response": {"success": "Successfully added new cafe."}})
+    return render_template("add.html")
 
 ## HTTP PUT/PATCH - Update Record
 
