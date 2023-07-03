@@ -91,12 +91,14 @@ def add():
 
 @app.route("/update-price/<cafe_id>", methods=["PATCH"])
 def patch(cafe_id):
-    new_price = request.args.get("new_price")
-    cafe = db.session.execute(db.select(Cafe).where(Cafe.id == cafe_id)).scalar()
-    cafe.coffee_price = new_price
-    db.session.commit()
-    return jsonify({"response": {"success": "Successfully updated the price"}})
-
+    try:
+        new_price = request.args.get("new_price")
+        cafe = db.session.execute(db.select(Cafe).where(Cafe.id == cafe_id)).scalar()
+        cafe.coffee_price = new_price
+        db.session.commit()
+        return jsonify({"response": {"success": "Successfully updated the price"}})
+    except:
+        return jsonify({"error": {"Not found": "Sorry a cafe with that id was not found in the database"}}), 404
 
 ## HTTP DELETE - Delete Record
 
