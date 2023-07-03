@@ -17,8 +17,9 @@ class User(UserMixin, db.Model):
     password = db.Column(db.String(100))
     name = db.Column(db.String(1000))
 #Line below only required once, when creating DB.
-# db.create_all()
 
+# with app.app_context():
+#     db.create_all()
 
 @app.route('/')
 def home():
@@ -30,7 +31,7 @@ def register():
     if request.method == "POST":
         new_user = User(
             email = request.form.get("email"),
-            password = request.form.get("password"),
+            password = generate_password_hash(request.form.get("password"), "pbkdf2", 8),
             name = request.form.get("name")
         )
         
