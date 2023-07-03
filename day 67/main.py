@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, url_for
+from flask import Flask, render_template, redirect, url_for, request
 from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
@@ -37,7 +37,7 @@ class CreatePostForm(FlaskForm):
     subtitle = StringField("Subtitle", validators=[DataRequired()])
     author = StringField("Your Name", validators=[DataRequired()])
     img_url = StringField("Blog Image URL", validators=[DataRequired(), URL()])
-    body = StringField("Blog Content", validators=[DataRequired()])
+    body = CKEditorField("Blog Content", validators=[DataRequired()])
     submit = SubmitField("Submit Post")
 
 
@@ -55,6 +55,27 @@ def show_post(index):
         if blog_post.id == index:
             requested_post = blog_post
     return render_template("post.html", post=requested_post)
+
+
+@app.route("/new-post", methods=["GET", "POST"])
+def add_post():
+    form = CreatePostForm()
+    if form.validate_on_submit():
+        new_post = BlogPost(
+            title = form.title.data,
+            subtitle = form.subtitle.data,
+            date = "2023-07-03",
+            body = request.form.get("body"),
+            author = "Witalka",
+            img_url = form.img_url.data,
+            
+        )
+
+        db.session.add(new_post)
+        db.session.commit()
+        return redirect(url_for("get_all_posts"))
+    
+    return render_template("make-post.html", form=form)
 
 
 @app.route("/about")
