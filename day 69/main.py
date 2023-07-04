@@ -8,6 +8,7 @@ from sqlalchemy.orm import relationship
 from flask_login import UserMixin, login_user, LoginManager, login_required, current_user, logout_user
 from forms import CreatePostForm, RegisterForm, LoginForm
 from flask_gravatar import Gravatar
+from functools import wraps
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '8BYkEfBA6O6donzWlSihBXox7C0sKR6b'
@@ -48,6 +49,16 @@ with app.app_context():
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(user_id)
+
+
+def admin_only(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if current_user.id == 1:
+            return f(*args, **kwargs)
+        return render_template("403.html"), 403
+    return decorated_function
+
 
 
 @app.route('/')
@@ -127,6 +138,7 @@ def contact():
 
 
 @app.route("/new-post")
+@admin_only
 @login_required
 def add_new_post():
     form = CreatePostForm()
@@ -146,6 +158,7 @@ def add_new_post():
 
 
 @app.route("/edit-post/<int:post_id>")
+@admin_only
 @login_required
 def edit_post(post_id):
     post = BlogPost.query.get(post_id)
@@ -169,6 +182,7 @@ def edit_post(post_id):
 
 
 @app.route("/delete/<int:post_id>")
+@admin_only
 @login_required
 def delete_post(post_id):
     post_to_delete = BlogPost.query.get(post_id)

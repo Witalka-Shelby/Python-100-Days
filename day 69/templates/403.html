@@ -1,0 +1,6 @@
+{% block title %}Error{% endblock %}
+{% block body %}
+  <h1>403 ACCESS forbidden</h1>
+  <p>Admin only area.
+  <p><a href="{{ url_for('get_all_posts') }}">go somewhere nice</a>
+{% endblock %}
