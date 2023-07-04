@@ -34,7 +34,7 @@ class User(UserMixin, db.Model):
 
 @app.route('/')
 def home():
-    return render_template("index.html")
+    return render_template("index.html", user=current_user)
 
 
 @app.route('/register', methods=["GET", "POST"])
@@ -70,7 +70,7 @@ def login():
             flash("Email or Password is wrong, please try again.")
             return render_template("login.html")
 
-    return render_template("login.html")
+    return render_template("login.html", user=current_user)
 
 
 @app.route('/secrets')
