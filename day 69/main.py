@@ -6,7 +6,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import relationship
 from flask_login import UserMixin, login_user, LoginManager, login_required, current_user, logout_user
-from forms import CreatePostForm, RegisterForm
+from forms import CreatePostForm, RegisterForm, LoginForm
 from flask_gravatar import Gravatar
 
 app = Flask(__name__)
@@ -35,7 +35,7 @@ class BlogPost(db.Model):
     img_url = db.Column(db.String(250), nullable=False)
 
 
-class User(db.Model):
+class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, unique=True, nullable=False)
     email = db.Column(db.String)
@@ -47,7 +47,7 @@ with app.app_context():
 
 @login_manager.user_loader
 def load_user(user_id):
-    return User.get(user_id)
+    return User.query.get(user_id)
 
 
 @app.route('/')
@@ -60,31 +60,57 @@ def get_all_posts():
 @app.route('/register', methods=["GET", "POST"])
 def register():
     if request.method == "POST":
-        new_user = User(
-            name = request.form.get("name"),
-            email = request.form.get("email"),
-            password = generate_password_hash(request.form.get("password"), "pbkdf2", 16)
-            )
-        
-        db.session.add(new_user)
-        db.session.commit()
-        login_user(new_user)
+        email = request.form.get("email")
+        already_registered = db.session.execute(db.select(User).where(User.email == email)).scalar()
+        if already_registered == None:
+            new_user = User(
+                name = request.form.get("name"),
+                email = email,
+                password = generate_password_hash(request.form.get("password"), "pbkdf2", 16)
+                )
+            
+            db.session.add(new_user)
+            db.session.commit()
+            login_user(new_user)
+            return redirect(url_for("get_all_posts"))
+        else:
+            flash("User already signed up, log in instead")
+            return redirect(url_for("login"))
         
     form = RegisterForm()
     return render_template("register.html", form=form)
 
 
-@app.route('/login')
+@app.route('/login', methods=["GET", "POST"])
 def login():
-    return render_template("login.html")
+    form = LoginForm()
+
+    if request.method == "POST":
+        email = request.form.get("email")
+        password = request.form.get("password")
+        user = db.session.execute(db.select(User).where(User.email == email)).scalar()
+        if user != None:
+            if check_password_hash(user.password, password):
+                login_user(user)
+                return redirect(url_for("get_all_posts"))
+            else:
+                flash("Password was incorrect")
+                return redirect(url_for("login"))
+        else:
+            flash("That email does not exist")
+            return redirect(url_for("login"))
+
+    return render_template("login.html", form=form)
 
 
 @app.route('/logout')
 def logout():
+    logout_user()
     return redirect(url_for('get_all_posts'))
 
 
 @app.route("/post/<int:post_id>")
+@login_required
 def show_post(post_id):
     requested_post = BlogPost.query.get(post_id)
     return render_template("post.html", post=requested_post)
@@ -101,6 +127,7 @@ def contact():
 
 
 @app.route("/new-post")
+@login_required
 def add_new_post():
     form = CreatePostForm()
     if form.validate_on_submit():
@@ -119,6 +146,7 @@ def add_new_post():
 
 
 @app.route("/edit-post/<int:post_id>")
+@login_required
 def edit_post(post_id):
     post = BlogPost.query.get(post_id)
     edit_form = CreatePostForm(
@@ -141,6 +169,7 @@ def edit_post(post_id):
 
 
 @app.route("/delete/<int:post_id>")
+@login_required
 def delete_post(post_id):
     post_to_delete = BlogPost.query.get(post_id)
     db.session.delete(post_to_delete)
