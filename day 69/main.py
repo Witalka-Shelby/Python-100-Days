@@ -28,7 +28,8 @@ login_manager.init_app(app)
 class BlogPost(db.Model):
     __tablename__ = "blog_posts"
     id = db.Column(db.Integer, primary_key=True)
-    author = db.Column(db.String(250), nullable=False)
+    author = relationship("User", back_populates="posts")
+    author_id = db.Column(db.Integer, db.ForeignKey("user.id"))
     title = db.Column(db.String(250), unique=True, nullable=False)
     subtitle = db.Column(db.String(250), nullable=False)
     date = db.Column(db.String(250), nullable=False)
@@ -41,6 +42,7 @@ class User(db.Model, UserMixin):
     name = db.Column(db.String, unique=True, nullable=False)
     email = db.Column(db.String)
     password = db.Column(db.String)
+    posts = relationship("BlogPost", back_populates="author")
 
 ## Create db
 with app.app_context():
@@ -65,6 +67,8 @@ def admin_only(f):
 def get_all_posts():
     print(current_user)
     posts = BlogPost.query.all()
+    for post in posts:
+        print(post)
     return render_template("index.html", all_posts=posts)
 
 
@@ -121,7 +125,6 @@ def logout():
 
 
 @app.route("/post/<int:post_id>")
-@login_required
 def show_post(post_id):
     requested_post = BlogPost.query.get(post_id)
     return render_template("post.html", post=requested_post)
@@ -137,7 +140,7 @@ def contact():
     return render_template("contact.html")
 
 
-@app.route("/new-post")
+@app.route("/new-post", methods=["GET", "POST"])
 @admin_only
 @login_required
 def add_new_post():
