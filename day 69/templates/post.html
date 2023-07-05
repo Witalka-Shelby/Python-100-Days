@@ -1,4 +1,5 @@
 {% include "header.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
 
   <!-- Page Header -->
   <header class="masthead" style="background-image: url('{{post.img_url}}')">
@@ -10,7 +11,7 @@
             <h1>{{post.title}}</h1>
             <h2 class="subheading">{{post.subtitle}}</h2>
             <span class="meta">Posted by
-              <a href="#">{{post.author}}</a>
+              <a href="#">{{post.author.name}}</a>
               on {{post.date}}</span>
           </div>
         </div>
@@ -33,22 +34,32 @@
 
 
 <!--           Comments Area -->
+          {% if current_user.is_authenticated == True: %}
+          <div>
+            {{ wtf.quick_form(form, novalidate=True, button_map={"submit": "primary"}) }}
+          </div>
           <div class="col-lg-8 col-md-10 mx-auto comment">
-              <ul class="commentList">
-                <li>
-                    <div class="commenterImage">
-                      <img src="https://pbs.twimg.com/profile_images/744849215675838464/IH0FNIXk.jpg"/>
-                    </div>
-                    <div class="commentText">
-                      <p>Some comment</p>
-                      <span class="date sub-text">comment author name</span>
-                    </div>
-                </li>
-              </ul>
-            </div>
-
+            <ul class="commentList">
+              {% for comment in comments: %}
+              <li>
+                  <div class="commenterImage">
+                    <img src="{{ 'zzz.sochi@gmail.com' | gravatar }}"/>
+                  </div>
+                  <div class="commentText">
+                    <p>{{ comment.text }}</p>
+                    <span class="date sub-text">{{ comment.author_id }}</span>
+                  </div>
+              </li>
+              {% endfor %}
+            </ul>
+          </div>
+          {% else: %}
+            <p>
+              Please Login to see comments
+            </p>
 
           </div>
+          {% endif %}
       </div>
     </div>
   </article>
