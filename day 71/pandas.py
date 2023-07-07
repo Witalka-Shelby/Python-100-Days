@@ -22,3 +22,5 @@ highest_potential[['Undergraduate Major', 'Mid-Career 90th Percentile Salary']].
 
 low_risk = clean_df.sort_values("Spread", ascending=False)
 low_risk[['Undergraduate Major', 'Spread']].head()
+
+clean_df.groupby("Group").count()
