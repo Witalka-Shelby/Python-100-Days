@@ -16,3 +16,6 @@ clean_df.loc[mid_carrer]
 spread_col = clean_df['Mid-Career 90th Percentile Salary'] - clean_df['Mid-Career 10th Percentile Salary']
 clean_df.insert(1, "Spread", spread_col)
 clean_df.head()
+
+highest_potential = clean_df.sort_values('Mid-Career 90th Percentile Salary', ascending=False)
+highest_potential[['Undergraduate Major', 'Mid-Career 90th Percentile Salary']].head()
