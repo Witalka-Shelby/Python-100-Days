@@ -9,3 +9,6 @@ clean_df.loc[max_mid_carrer_10th]
 
 min_start_carrer = clean_df['Starting Median Salary'].idxmin()
 clean_df.loc[min_start_carrer]
+
+mid_carrer = clean_df['Mid-Career Median Salary'].idxmin()
+clean_df.loc[mid_carrer]
