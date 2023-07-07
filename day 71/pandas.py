@@ -24,3 +24,7 @@ low_risk = clean_df.sort_values("Spread", ascending=False)
 low_risk[['Undergraduate Major', 'Spread']].head()
 
 clean_df.groupby("Group").count()
+
+#@title
+pd.options.display.float_format = '{:,.2f}'.format
+clean_df.groupby("Group").mean()
