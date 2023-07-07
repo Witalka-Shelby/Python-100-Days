@@ -12,3 +12,7 @@ clean_df.loc[min_start_carrer]
 
 mid_carrer = clean_df['Mid-Career Median Salary'].idxmin()
 clean_df.loc[mid_carrer]
+
+spread_col = clean_df['Mid-Career 90th Percentile Salary'] - clean_df['Mid-Career 10th Percentile Salary']
+clean_df.insert(1, "Spread", spread_col)
+clean_df.head()
