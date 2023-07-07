@@ -3,3 +3,9 @@ df = pd.read_csv("salaries_by_college_major.csv")
 
 clean_df = df.dropna()
 clean_df.columns
+
+max_mid_carrer_10th = clean_df['Mid-Career Median Salary'].idxmax()
+clean_df.loc[max_mid_carrer_10th]
+
+min_start_carrer = clean_df['Starting Median Salary'].idxmin()
+clean_df.loc[min_start_carrer]
